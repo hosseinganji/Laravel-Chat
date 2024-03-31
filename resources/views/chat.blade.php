@@ -415,7 +415,7 @@
             height: 60px;
             width: 100%;
             background-color: #f5f1ee;
-            padding: 10px 5px 10px 5px !important;
+            padding: 10px 10px 10px 10px !important;
             margin: 0 !important;
             z-index: 1000;
         }
