@@ -630,17 +630,18 @@
         <div class="row app-one">
             <div class="col-sm-4 side">
                 <div class="side-one">
-                    <div class="row heading">
-                        <div class="col-sm-3 col-xs-3 heading-avatar">
+                    <div class="d-flex heading">
+                        <div class="col-sm-10 col-xs-10 heading-avatar">
                             <div class="heading-avatar-icon">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
+                                <img class="mx-2" src="https://bootdey.com/img/Content/avatar/avatar1.png" />
+                                <span class="fw-bold">{{ auth()->user()->name }}</span>
                             </div>
                         </div>
-                        <div class="col-sm-1 col-xs-1 heading-dot pull-right">
-                            <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true"></i>
+                        <div class="col-sm-1 col-xs-1 heading-compose m-auto">
+                            <i class="fa fa-comments fa-2x" aria-hidden="true"></i>
                         </div>
-                        <div class="col-sm-2 col-xs-2 heading-compose pull-right">
-                            <i class="fa fa-comments fa-2x pull-right" aria-hidden="true"></i>
+                        <div class="col-sm-1 col-xs-1 heading-dot m-auto text-center">
+                            <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="row searchBox">

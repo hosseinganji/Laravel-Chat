@@ -1,6 +1,7 @@
 <div class="sideBar">
     @foreach ($users as $user)
-        <div class="d-flex flex-row sideBar-body" wire:key="{{ $user->id }}" wire:click="selectUser({{ $user->id }})">
+        <div class="d-flex flex-row sideBar-body" wire:key="{{ $user->id }}" wire:click="selectUser({{ $user->id }})"
+            style="{{ $selected_user ? ($user->id == $selected_user["id"] ? "background: #d1d1d1;" : "") : "" }}">
             <div class="col-2 sideBar-avatar">
                 <div class="avatar-icon">
                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" />
