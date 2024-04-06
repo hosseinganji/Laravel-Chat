@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Chat;
 
+use App\Events\AddMessage;
 use App\Models\Message;
 use Livewire\Component;
 
@@ -9,13 +10,17 @@ class Messages extends Component
 {
     public $text = "";
     public $user;
+    public $message;
 
     public $rules = [
         "text" => "required"
     ];
 
     public function getListeners(){
-        return ["selectedUser" => 'getUser'];
+        return [
+            "selectedUser" => 'getUser',
+            "echo-private:sendMessage,AddMessage" => "sendMessageFromWebsocket"
+        ];
     }
 
     public function getUser($user){
@@ -25,15 +30,26 @@ class Messages extends Component
     public function sendMessage(){
         $this->validate();
 
-        Message::create([
+        $message = Message::create([
             "user_id_from" => auth()->user()->id,
             "user_id_to" => $this->user["id"],
             "text" => $this->text
         ]);
 
+
+        broadcast(new AddMessage($message))->toOthers();
+
+        $this->message = $message;
         $this->text = "";
     }
 
+    public function sendMessageFromWebsocket(Message $getData){
+        // dd($getData, "sdf");
+        $message = $getData;
+        if($this->user == $message->user_id_from){
+            $this->message->prepend($message);
+        }
+    }
     public function render()
     {
         if($this->user){
