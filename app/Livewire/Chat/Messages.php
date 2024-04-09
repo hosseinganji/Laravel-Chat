@@ -4,6 +4,7 @@ namespace App\Livewire\Chat;
 
 use App\Events\AddMessage;
 use App\Models\Message;
+use App\Models\User;
 use Livewire\Component;
 
 class Messages extends Component
@@ -16,15 +17,28 @@ class Messages extends Component
         "text" => "required"
     ];
 
+    public function __construct(){
+        // $this->user = $this->user ?? User::all()->except(auth()->user()->id)->first()->id;
+    }
+
+
+
     public function getListeners(){
-        return [
-            "selectedUser" => 'getUser',
-            "echo-private:sendMessage,AddMessage" => "sendMessageFromWebsocket"
-        ];
+        if($this->user){
+            return [
+                "selectedUser" => 'getUser',
+                "echo-private:sendMessage.user.".$this->user["id"].",AddMessage" => "sendMessageFromWebsocket"
+            ];
+        }else{
+            return [
+                "selectedUser" => 'getUser',
+            ];
+        }
     }
 
     public function getUser($user){
         $this->user = $user;
+
     }
 
     public function sendMessage(){
@@ -36,16 +50,13 @@ class Messages extends Component
             "text" => $this->text
         ]);
 
-
-        broadcast(new AddMessage($message))->toOthers();
+        broadcast(new AddMessage($this->user["id"], $message))->toOthers();
 
         $this->message = $message;
         $this->text = "";
     }
 
-    public function sendMessageFromWebsocket(Message $getData){
-        // dd($getData, "sdf");
-        $message = $getData;
+    public function sendMessageFromWebsocket(Message $message){
         if($this->user == $message->user_id_from){
             $this->message->prepend($message);
         }

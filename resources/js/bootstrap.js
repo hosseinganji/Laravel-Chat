@@ -36,6 +36,6 @@ window.Echo = new Echo({
 Pusher.logToConsole = true
 
 
-window.Echo.private("sendMessage").listen("AddMessage", (e) =>{
-    console.log(e);
-});
+// window.Echo.private("sendMessage.user.2").listen("AddMessage", (e) =>{
+//     console.log(e);
+// });

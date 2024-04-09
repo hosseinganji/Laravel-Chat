@@ -1,5 +1,5 @@
 <div class="col-sm-8 conversation">
-    @if ($user)
+    @if ($user) 
         <div class="row heading">
             <div class="col-sm-1 col-xs-1 heading-avatar">
                 <div class="heading-avatar-icon">
