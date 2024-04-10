@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('sendMessage.user.{user_id}', function ($user, $user_id) {
-    // dd($user, $user_id);
-    return $user;
+Broadcast::channel('sendMessage.user.{user_id}', function ($user) {
+    // dd($user);
+    return [
+        "id" => $user->id,
+        "name" => $user->name
+    ];
 });

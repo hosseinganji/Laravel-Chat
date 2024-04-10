@@ -34,6 +34,7 @@ class AddMessage implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
+        // dd($this->user_id);
         return [
             new PrivateChannel('sendMessage.user.'.$this->user_id),
         ];

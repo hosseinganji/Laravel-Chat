@@ -17,29 +17,18 @@ class Messages extends Component
         "text" => "required"
     ];
 
-    public function __construct(){
-        // $this->user = $this->user ?? User::all()->except(auth()->user()->id)->first()->id;
-    }
-
-
-
-    public function getListeners(){
-        if($this->user){
-            return [
-                "selectedUser" => 'getUser',
-                "echo-private:sendMessage.user.".$this->user["id"].",AddMessage" => "sendMessageFromWebsocket"
-            ];
-        }else{
-            return [
-                "selectedUser" => 'getUser',
-            ];
-        }
-    }
-
     public function getUser($user){
         $this->user = $user;
-
     }
+
+    public function getListeners(){
+        return [
+            "selectedUser" => 'getUser',
+            "echo-private:sendMessage.user.".auth()->user()->id.",AddMessage" => "sendMessageFromWebsocket"
+        ];
+    }
+
+
 
     public function sendMessage(){
         $this->validate();
@@ -52,13 +41,12 @@ class Messages extends Component
 
         broadcast(new AddMessage($this->user["id"], $message))->toOthers();
 
-        $this->message = $message;
         $this->text = "";
     }
 
     public function sendMessageFromWebsocket(Message $message){
-        if($this->user == $message->user_id_from){
-            $this->message->prepend($message);
+        if($this->user["id"] == $message->user_id_from){
+            Message::all()->prepend($message);
         }
     }
     public function render()
