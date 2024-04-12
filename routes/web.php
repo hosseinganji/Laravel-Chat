@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,8 @@ Route::get("/chat", [ChatController::class, "index"])->middleware("auth");
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get("test", function(){
+    dd(count(User::first()->recive_messages()->where("user_id_from", 2)->get()));
+});

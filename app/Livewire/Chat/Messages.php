@@ -12,6 +12,7 @@ class Messages extends Component
     public $text = "";
     public $user;
     public $message;
+    public $reminder = [];
 
     public $rules = [
         "text" => "required"
@@ -36,7 +37,8 @@ class Messages extends Component
         $message = Message::create([
             "user_id_from" => auth()->user()->id,
             "user_id_to" => $this->user["id"],
-            "text" => $this->text
+            "text" => $this->text,
+            "is_read" => false
         ]);
 
         broadcast(new AddMessage($this->user["id"], $message))->toOthers();
@@ -45,7 +47,12 @@ class Messages extends Component
     }
 
     public function sendMessageFromWebsocket(Message $message){
+        // dump($message);
+        $this->dispatch("reminder");
         if($this->user["id"] == $message->user_id_from){
+            $message->update([
+                "is_read" => true
+            ]);
             Message::all()->prepend($message);
         }
     }

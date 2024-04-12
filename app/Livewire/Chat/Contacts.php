@@ -9,8 +9,23 @@ class Contacts extends Component
 {
     public $user;
 
+    public function getListeners(){
+        return [
+            "reminder" => 'show_reminder',
+        ];
+    }
+
+    public function show_reminder(){
+        // $this->render();
+    }
+
     public function selectUser(User $user){
         $this->user = $user;
+        if(count(auth()->user()->recive_messages()->where("is_read", 0)->where("user_id_from", $user->id)->get())){
+            auth()->user()->recive_messages()->where("is_read", 0)->where("user_id_from", $user->id)->update([
+                "is_read" => true
+            ]);
+        }
         $this->dispatch("selectedUser", user: $user);
     }
 
